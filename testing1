@@ -1,0 +1,160 @@
+# Set the working directory (remember to use / in windows)
+# inside your working directory, please create the following folders: credentials, data
+setwd("/Users/brunowisniewskireiger/Desktop/764/Project 3")
+
+#You will have to run the chunk below in order to install all t#We'll now turn to a different type of Twitter data -- static data, either recent tweets or user-level information. This type of data can be retrieved with Twitter's REST API. We will use the `netdemR` package here -- this is a package that we created in the NetDem lab at USC to facilitate the collection and analysis of Twitter data.
+
+### Searching recent tweets
+
+#It is possible to download recent tweets, but only up those less than 7 days old, and in some cases not all of them.
+he R packages we will use throughout today. (Note that this may take a while!)
+
+doInstall <- TRUE  # Change to FALSE if you don't want packages installed.
+toInstall <- c("ROAuth", "streamR", "Rfacebook", "stringr", "httr", "devtools",
+               "maps", "igraph", "ggplot2", "quanteda", "reshape2", "scales", 
+               "ndjson")
+if (doInstall) install.packages(toInstall)
+if (doInstall) devtools::install_github("netdem-USC/netdemR")
+
+#### Authenticating
+
+#Before we can start collecting Twitter data, we need to create an OAuth token that will allow us to authenticate our connection and access our personal data.
+
+#Follow these steps to create your token:
+
+#1. Go to apps.twitter.com and sign in.  
+#2. Click on "Create New App". You will need to have a phone number associated with your account in order to be able to create a token.  
+#3. Fill name, description, and website (it can be anything, even http://www.google.com). Make sure you leave 'Callback URL' empty.
+#4. Agree to user conditions.  
+#5. From the "Keys and Access Tokens" tab, copy consumer key and consumer secret and paste below
+
+library(ROAuth)
+requestURL <- "https://api.twitter.com/oauth/request_token"
+accessURL <- "https://api.twitter.com/oauth/access_token"
+authURL <- "https://api.twitter.com/oauth/authorize"
+consumerKey <- "4ihvS3mEDn8PfuMG4ho1ZzDke"
+consumerSecret <- "A0PvixE2zvbulUw2RmTzwyZEqIqCzobhhWEL9WKS8rSLgg7qPY"
+
+my_oauth <- OAuthFactory$new(consumerKey=consumerKey,
+                             consumerSecret=consumerSecret, requestURL=requestURL,
+                             accessURL=accessURL, authURL=authURL)
+
+#What can go wrong here? Make sure the consumer key and consumer secret are pasted here as is, without any additional space character. If you don't see any output in the console after running the code above, that's a good sign.
+#Run the below line and go to the URL that appears on screen. Then, type the PIN into the console (RStudio sometimes doesn't show what you're typing, but it's there!)
+my_oauth$handshake(cainfo = system.file("CurlSSL", "cacert.pem", package = "RCurl"))
+
+#Now you can save oauth token for use in future sessions with netdemR or streamR. Make sure you save it in a folder where this is the only file.
+save(my_oauth, file="credentials/twitter-token.Rdata")
+
+#We'll now turn to a different type of Twitter data -- static data, either recent tweets or user-level information. This type of data can be retrieved with Twitter's REST API. We will use the `netdemR` package here -- this is a package that we created in the NetDem lab at USC to facilitate the collection and analysis of Twitter data.
+### Searching recent tweets
+#It is possible to download recent tweets, but only up those less than 7 days old, and in some cases not all of them.
+
+
+library(netdemR)
+library(streamR)
+
+searchTweets(q=c("Amazon"), 
+             filename="data/amazon-tweets.json", lang="en", until="2018-02-27", n=900,
+             oauth_folder="credentials")
+tweets1 <- parseTweets("data/amazon-tweets.json")
+
+searchTweets(q=c("Netflix"), 
+             filename="data/netflix-tweets.json", lang="en", until="2018-02-27", n=900,
+             oauth_folder="credentials")
+tweets2 <- parseTweets("data/netflix-tweets.json")
+
+searchTweets(q=c("IBM"), 
+             filename="data/IBM-tweets.json", lang="en", until="2018-02-27", n=900,
+             oauth_folder="credentials")
+tweets3 <- parseTweets("data/IBM-tweets.json")
+
+searchTweets(q=c("Tesla"), 
+             filename="data/tesla-tweets.json", lang="en", until="2018-02-27", n=900,
+             oauth_folder="credentials")
+tweets4 <- parseTweets("data/tesla-tweets.json")
+
+searchTweets(q=c("Samsung"), 
+             filename="data/samsung-tweets.json", lang="en", until="2018-02-27", n=900,
+             oauth_folder="credentials")
+tweets5 <- parseTweets("data/samsung-tweets.json")
+
+searchTweets(q=c("Google"), 
+             filename="data/Google-tweets.json", lang="en", until="2018-02-27", n=900,
+             oauth_folder="credentials")
+tweets6 <- parseTweets("data/Google-tweets.json")
+
+searchTweets(q=c("Hewlett Packard"), 
+             filename="data/hp-tweets.json", lang="en", until="2018-02-27", n=900,
+             oauth_folder="credentials")
+tweets7 <- parseTweets("data/hp-tweets.json")
+
+searchTweets(q=c("Adobe"), 
+             filename="data/adobe-tweets.json", lang="en", until="2018-02-27", n=900,
+             oauth_folder="credentials")
+tweets8 <- parseTweets("data/adobe-tweets.json")
+
+searchTweets(q=c("Microsoft"), 
+             filename="data/microsoft-tweets.json", lang="en", until="2018-02-27", n=900,
+             oauth_folder="credentials")
+tweets9 <- parseTweets("data/microsoft-tweets.json")
+
+searchTweets(q=c("Intel"), 
+             filename="data/intel-tweets.json", lang="en", until="2018-02-27", n=900,
+             oauth_folder="credentials")
+tweets10 <- parseTweets("data/intel-tweets.json")
+
+searchTweets(q=c("Cisco"), 
+             filename="data/cisco-tweets.json", lang="en", until="2018-02-27", n=900,
+             oauth_folder="credentials")
+tweets11 <- parseTweets("data/cisco-tweets.json")
+
+searchTweets(q=c("Oracle"), 
+             filename="data/oracle-tweets.json", lang="en", until="2018-02-27", n=900,
+             oauth_folder="credentials")
+tweets12 <- parseTweets("data/oracle-tweets.json")
+
+searchTweets(q=c("Qualcomm"), 
+             filename="data/qualcomm-tweets.json", lang="en", until="2018-02-27", n=900,
+             oauth_folder="credentials")
+tweets13 <- parseTweets("data/qualcomm-tweets.json")
+
+searchTweets(q=c("Xerox"), 
+             filename="data/xerox-tweets.json", lang="en", until="2018-02-27", n=900,
+             oauth_folder="credentials")
+tweets14 <- parseTweets("data/xerox-tweets.json")
+
+searchTweets(q=c("Facebook"), 
+             filename="data/facebook-tweets.json", lang="en", until="2018-02-27", n=900,
+             oauth_folder="credentials")
+tweets15 <- parseTweets("data/facebook-tweets.json")
+
+searchTweets(q=c("Huawei"), 
+             filename="data/huawei-tweets.json", lang="en", until="2018-02-27", n=900,
+             oauth_folder="credentials")
+tweets16 <- parseTweets("data/huawei-tweets.json")
+
+searchTweets(q=c("Snap"), 
+             filename="data/snap-tweets.json", lang="en", until="2018-02-27", n=900,
+             oauth_folder="credentials")
+tweets17 <- parseTweets("data/snap-tweets.json")
+
+searchTweets(q=c("Tencent"), 
+             filename="data/tencent-tweets.json", lang="en", until="2018-02-27", n=900,
+             oauth_folder="credentials")
+tweets18 <- parseTweets("data/tencent-tweets.json")
+
+searchTweets(q=c("Nvidia"), 
+             filename="data/nvidia-tweets.json", lang="en", until="2018-02-27", n=900,
+             oauth_folder="credentials")
+tweets19 <- parseTweets("data/nvidia-tweets.json")
+
+searchTweets(q=c("Alibaba"), 
+             filename="data/alibaba-tweets.json", lang="en", until="2018-02-27", n=900,
+             oauth_folder="credentials")
+tweets20 <- parseTweets("data/alibaba-tweets.json")
+
+
+for (i in seq(19:20)) {write.csv(tweets[i], file="data/tech-tweets.csv", row.names=FALSE)}
+
+
